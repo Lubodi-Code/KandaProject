@@ -1,0 +1,32 @@
+{% extends 'api/base.html' %}
+
+{% block title %}Activación Fallida | KandaBackend{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Activación Fallida</h4>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="bi bi-x-circle" style="font-size: 4rem; color: #dc3545;"></i>
+                </div>
+                <h5 class="card-title">El enlace de activación no es válido</h5>
+                <p class="card-text">Lo sentimos, el enlace de activación que has utilizado no es válido o ha expirado.</p>
+                <p class="card-text">Posibles razones:</p>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">El enlace ha expirado (válido por {{ expiration_days }} días)</li>
+                    <li class="list-group-item">La cuenta ya ha sido activada</li>
+                    <li class="list-group-item">El enlace está mal formado o incompleto</li>
+                </ul>
+                <a href="{% url 'resend_activation' %}" class="btn btn-primary">Solicitar un nuevo enlace</a>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">¿Ya tienes una cuenta activa? <a href="{% url 'login' %}">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

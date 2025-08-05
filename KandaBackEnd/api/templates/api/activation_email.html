@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activa tu cuenta en KandaBackend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Bienvenido a KandaBackend</h2>
+        </div>
+        
+        <p>Hola <strong>{{ user.username }}</strong>,</p>
+        
+        <p>Gracias por registrarte en KandaBackend. Para activar tu cuenta y comenzar a usar nuestro servicio, por favor haz clic en el siguiente botón:</p>
+        
+        <div style="text-align: center;">
+            <a href="{{ frontend_url }}/activate/{{ uid }}/{{ token }}" class="button">Activar mi cuenta</a>
+        </div>
+        
+        <p>O puedes copiar y pegar el siguiente enlace en tu navegador:</p>
+        
+        <p style="word-break: break-all;">{{ frontend_url }}/activate/{{ uid }}/{{ token }}</p>
+        
+        <p>Este enlace expirará en {{ expiration_days }} días.</p>
+        
+        <p>Si no has solicitado este correo, puedes ignorarlo de forma segura.</p>
+        
+        <p>Saludos,<br>El equipo de KandaBackend</p>
+        
+        <div class="footer">
+            <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+        </div>
+    </div>
+</body>
+</html>

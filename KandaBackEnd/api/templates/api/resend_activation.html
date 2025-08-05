@@ -1,0 +1,36 @@
+{% extends 'api/base.html' %}
+
+{% block title %}Reenviar Activación | KandaBackend{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Reenviar Correo de Activación</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Si no has recibido el correo de activación o el enlace ha expirado, puedes solicitar uno nuevo ingresando tu dirección de correo electrónico.</p>
+                
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Correo electrónico</label>
+                        <input type="email" name="email" id="id_email" class="form-control" required>
+                        <div class="form-text">Ingresa el correo electrónico que usaste durante el registro.</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Enviar Correo de Activación</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">¿Ya tienes una cuenta activa? <a href="{% url 'login' %}">Inicia sesión</a></p>
+                <p class="mt-2 mb-0">¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

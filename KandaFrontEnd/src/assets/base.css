@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+
+
+/* Variables CSS siguiendo el patrón de Vue.js - Tema Oscuro con Verde */
+:root {
+  /* Colores base - Tema oscuro personalizado */
+  --vt-c-white: #000000;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-black: #000000;
+  --vt-c-black-soft: #111111;
+  --vt-c-black-mute: #1a1a1a;
+
+  --vt-c-indigo: #2c3e50;
+
+  /* Divisores con acentos verdes para tema oscuro */
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(0, 255, 0, 0.25);
+  --vt-c-divider-dark-2: rgba(0, 255, 0, 0.15);
+
+  /* Textos para tema oscuro con verde */
+  --vt-c-text-light-1: #00ff00;
+  --vt-c-text-light-2: #00ff00;
+  --vt-c-text-dark-1: #00ff00;
+  --vt-c-text-dark-2: #00ff00;
+
+  /* Paleta de verdes */
+  --vt-c-green: #00ff00;
+  --vt-c-green-light: #33ff33;
+  --vt-c-green-lighter: #66ff66;
+  --vt-c-green-dark: #00cc00;
+  --vt-c-green-darker: #009900;
+
+  /* Colores complementarios */
+  --vt-c-blue: #0080ff;
+  --vt-c-blue-light: #3399ff;
+  --vt-c-blue-lighter: #66b3ff;
+  --vt-c-blue-dark: #0066cc;
+  --vt-c-blue-darker: #004d99;
+
+  /* Estados con verde neón */
+  --vt-c-yellow: #ffff00;
+  --vt-c-yellow-light: #ffff33;
+  --vt-c-yellow-lighter: #ffff66;
+  --vt-c-yellow-dark: #cccc00;
+  --vt-c-yellow-darker: #999900;
+
+  --vt-c-red: #ff3333;
+  --vt-c-red-light: #ff6666;
+  --vt-c-red-lighter: #ff9999;
+  --vt-c-red-dark: #cc0000;
+  --vt-c-red-darker: #990000;
+
+  /* Tema oscuro por defecto: fondo negro y textos en verde puro */
+  --color-background: #000000;
+  --color-background-soft: #000000;
+  --color-background-mute: #000000;
+
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+
+  --color-heading: #00ff00;
+  --color-text: #00ff00;
+
+  --color-primary: var(--vt-c-green);
+  --color-primary-hover: var(--vt-c-green-light);
+  --color-secondary: var(--vt-c-blue);
+  --color-accent: var(--vt-c-blue-light);
+
+  --color-success: var(--vt-c-green);
+  --color-warning: var(--vt-c-yellow);
+  --color-error: var(--vt-c-red);
+
+  /* Sombras con efecto verde neón */
+  --shadow-1: 0 1px 2px rgba(0, 255, 0, 0.1);
+  --shadow-2: 0 1px 5px rgba(0, 255, 0, 0.15);
+  --shadow-3: 0 1px 12px rgba(0, 255, 0, 0.2);
+  --shadow-4: 0 4px 16px rgba(0, 255, 0, 0.25);
+  --shadow-5: 0 8px 24px rgba(0, 255, 0, 0.3);
+
+  /* Transiciones suaves */
+  --vt-transition-duration: 0.25s;
+  --vt-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Clase opcional para textos en amarillo */
+.text-yellow {
+  color: #ffff00 !important;
+}
+
+/* Reset y base styles al estilo Vue */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: 
+    color var(--vt-transition-duration) var(--vt-transition-timing),
+    background-color var(--vt-transition-duration) var(--vt-transition-timing);
+  line-height: 1.6;
+  font-family:
+    'Inter var',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* Tipografía estilo Vue */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+/* Enlaces estilo Vue */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--vt-transition-duration) var(--vt-transition-timing);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* Componentes básicos estilo Vue - Tema oscuro con verde */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  transition: all var(--vt-transition-duration) var(--vt-transition-timing);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--vt-c-black);
+  border-color: var(--color-primary);
+  text-shadow: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-3);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-background-soft);
+  border-color: var(--color-border-hover);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+/* Cards estilo Vue - Tema oscuro */
+.card {
+  background: var(--color-background-mute);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-1);
+  transition: all var(--vt-transition-duration) var(--vt-transition-timing);
+}
+
+.card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-3);
+}
+
+/* Formularios estilo tema oscuro */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--color-background-soft);
+  border: 2px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-size: 1rem;
+  transition: all var(--vt-transition-duration) var(--vt-transition-timing);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: rgba(0, 255, 0, 0.4);
+}
+
+.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  background: var(--color-background);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-heading);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Utilidades */
+.text-gradient {
+  background: linear-gradient(315deg, var(--color-primary) 25%, var(--color-secondary));
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient 4s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}

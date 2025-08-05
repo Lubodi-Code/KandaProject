@@ -1,0 +1,33 @@
+{% extends 'api/base.html' %}
+
+{% block title %}Dashboard | KandaBackend{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Dashboard</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Bienvenido, {{ user.username }}!</h5>
+                <p class="card-text">Has iniciado sesión correctamente en KandaBackend.</p>
+                <p class="card-text">Este es tu panel de control personal. Aquí podrás gestionar tu cuenta y acceder a todas las funcionalidades del sistema.</p>
+                
+                <div class="mt-4">
+                    <h6>Información de tu cuenta:</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item">Nombre de usuario: {{ user.username }}</li>
+                        <li class="list-group-item">Correo electrónico: {{ user.email }}</li>
+                        <li class="list-group-item">Fecha de registro: {{ user.date_joined|date:"d/m/Y H:i" }}</li>
+                        <li class="list-group-item">Último acceso: {{ user.last_login|date:"d/m/Y H:i" }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
