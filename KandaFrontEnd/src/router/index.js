@@ -5,6 +5,7 @@ import tokenManager from '../utils/tokenManager'
 import LoginView from '../views/authviews/LoginView.vue'
 import RegisterView from '../views/authviews/RegisterView.vue'
 import DashboardView from '../views/authviews/DashboardView.vue'
+import UserDashboard from '../views/UserDashboard.vue'
 import ActivationView from '../views/authviews/ActivationView.vue'
 import ActivationInvalidView from '../views/authviews/ActivationInvalidView.vue'
 import ActivationEmailView from '../views/authviews/ActivationEmailView.vue'
@@ -36,7 +37,7 @@ const router = createRouter({
     // Ruta principal redirige a dashboard o login según autenticación
     {
       path: '/',
-      redirect: to => {
+      redirect: _to => {
         return tokenManager.isAuthenticated() ? { name: 'dashboard' } : { name: 'login' }
       }
     },
@@ -88,6 +89,12 @@ const router = createRouter({
       beforeEnter: requireAuth
     },
     
+    {
+      path: '/characters',
+      name: 'characters',
+      component: UserDashboard,
+      beforeEnter: requireAuth
+    },
     // Ruta para 404 - No encontrado
     {
       path: '/:pathMatch(.*)*',
