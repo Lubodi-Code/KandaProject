@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'api.middleware.MongoAuthMiddleware',  # Nuestro middleware personalizado
+    'api.middleware.middleware.MongoAuthMiddleware',  # Nuestro middleware personalizado
 ]
 
 ROOT_URLCONF = 'KandaBackend.urls'
@@ -149,7 +149,7 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
 # Configuración para la autenticación personalizada
 AUTHENTICATION_BACKENDS = [
-    'api.auth_backends.MongoEngineBackend',
+    'api.auth.auth_backends.MongoEngineBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 

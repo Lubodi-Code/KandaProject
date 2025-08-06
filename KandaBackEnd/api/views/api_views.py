@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from mongoengine.errors import DoesNotExist, NotUniqueError
 import logging
 
-from .models import User
+from ..models import User
 
 # Configurar logging
 logger = logging.getLogger(__name__)

@@ -1,8 +1,5 @@
 from django.urls import path
-from . import views
-from . import api_views
-from . import character_views
-from . import monitoring_views
+from .views import views, api_views, character_views, monitoring_views
 
 urlpatterns = [
     # Rutas de prueba

@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-from .models import CharacterProfile, User
-from .utils import get_character_statistics
+from ..models import CharacterProfile, User
+from ..utils import get_character_statistics
 import json
 import logging
 import datetime

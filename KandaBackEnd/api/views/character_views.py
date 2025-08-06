@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CharacterProfile, User
-from .tasks import process_character_with_ai
+from ..models import CharacterProfile, User
+from ..tasks import process_character_with_ai
 import json
 import datetime
 from bson import ObjectId

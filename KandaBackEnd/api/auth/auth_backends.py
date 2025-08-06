@@ -1,5 +1,5 @@
 from django.contrib.auth.backends import BaseBackend
-from .models import User
+from ..models import User
 import datetime
 
 class MongoEngineBackend(BaseBackend):

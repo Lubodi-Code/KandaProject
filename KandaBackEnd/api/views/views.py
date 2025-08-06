@@ -12,8 +12,8 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from functools import wraps
 
-from .models import TestModel, User
-from .forms import UserRegistrationForm, UserLoginForm
+from ..models import TestModel, User
+from ..forms import UserRegistrationForm, UserLoginForm
 from .tokens import account_activation_token
 from mongoengine.errors import ValidationError, NotUniqueError
 from pymongo.errors import ConnectionFailure
