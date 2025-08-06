@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from ..models.documents import User
 
 class UserRegistrationForm(forms.Form):
     """

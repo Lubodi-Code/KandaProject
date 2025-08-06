@@ -1,0 +1,26 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+
+# Django specific
+db.sqlite3
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Node.js dependencies
+/KandaFrontEnd/node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDE and editor files
+.idea/
+.vscode/

@@ -13,8 +13,8 @@ from django.conf import settings
 from functools import wraps
 
 from ..models import TestModel, User
-from ..forms import UserRegistrationForm, UserLoginForm
-from .tokens import account_activation_token
+from ..forms.forms import UserRegistrationForm, UserLoginForm
+from ..auth.tokens import account_activation_token
 from mongoengine.errors import ValidationError, NotUniqueError
 from pymongo.errors import ConnectionFailure
 

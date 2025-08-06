@@ -2,7 +2,7 @@ import logging
 import openai
 from django.conf import settings
 import json
-from .models import CharacterProfile
+from ..models.documents import CharacterProfile
 
 # Configurar logger
 logger = logging.getLogger(__name__)

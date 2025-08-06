@@ -52,32 +52,32 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      component: RegisterView,
+      component: () => import('../views/authviews/RegisterView.vue'),
       beforeEnter: requireGuest
     },
     {
       path: '/activate-email',
       name: 'activate-email',
-      component: ActivationEmailView,
+      component: () => import('../views/authviews/ActivationEmailView.vue'),
       beforeEnter: requireGuest
     },
     {
       path: '/activate-invalid',
       name: 'activate-invalid',
-      component: ActivationInvalidView,
+      component: () => import('../views/authviews/ActivationInvalidView.vue'),
       beforeEnter: requireGuest
     },
     {
       path: '/activate/:uidb64/:token',
       name: 'activate',
-      component: ActivationView,
+      component: () => import('../views/authviews/ActivationView.vue'),
       props: true,
       beforeEnter: requireGuest
     },
     {
       path: '/resend-activation',
       name: 'resend-activation',
-      component: ResendActivationView,
+      component: () => import('../views/authviews/ResendActivationView.vue'),
       beforeEnter: requireGuest
     },
     
@@ -85,14 +85,14 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: DashboardView,
+      component: () => import('../views/authviews/DashboardView.vue'),
       beforeEnter: requireAuth
     },
     
     {
       path: '/characters',
       name: 'characters',
-      component: UserDashboard,
+      component: () => import('../views/charactersview/CharactersView.vue'),
       beforeEnter: requireAuth
     },
     // Ruta para 404 - No encontrado

@@ -46,6 +46,10 @@ const logout = () => {
             <div class="text-xl font-bold text-indigo-400">Kanda</div>
           </div>
           <div class="flex items-center">
+            <button @click="router.push('/characters')" 
+                    class="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+              Mis Personajes
+            </button>
             <button @click="logout" 
                     class="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
               Cerrar sesión

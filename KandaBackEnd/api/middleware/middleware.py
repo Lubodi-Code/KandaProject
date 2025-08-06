@@ -1,4 +1,4 @@
-from .models import User
+from ..models.documents import User
 
 class MongoAuthMiddleware:
     """
