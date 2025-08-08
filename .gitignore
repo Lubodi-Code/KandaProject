@@ -16,6 +16,11 @@ db.sqlite3
 .env
 .env.*
 
+# Allow example env files
+!.env.example
+!KandaBackEnd/.env.example
+!KandaFrontEnd/.env.example
+
 # Node.js dependencies
 /KandaFrontEnd/node_modules/
 npm-debug.log
