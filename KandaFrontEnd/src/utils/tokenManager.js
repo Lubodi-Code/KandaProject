@@ -16,6 +16,7 @@ export default {
     localStorage.setItem(TOKEN_KEY, token);
     localStorage.setItem(TOKEN_TIMESTAMP_KEY, Date.now().toString());
     localStorage.setItem(TOKEN_EXPIRY_KEY, expiresIn.toString());
+    console.debug(`[Token] Token guardado, expira en ${expiresIn} segundos`);
   },
 
   /**
@@ -41,6 +42,12 @@ export default {
     const now = Date.now();
     const tokenTime = parseInt(timestamp, 10);
     const expirySeconds = parseInt(expiry, 10) * 1000; // Convertir a milisegundos
+    const timeLeft = (tokenTime + expirySeconds - now) / 1000; // segundos restantes
+    
+    // Depuraci+¦n de tiempo restante
+    if (timeLeft > 0) {
+      console.debug(`[Token] Token v+ílido, expira en ${Math.floor(timeLeft)} segundos`);
+    }
     
     return now - tokenTime > expirySeconds;
   },
@@ -60,6 +67,6 @@ export default {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(TOKEN_TIMESTAMP_KEY);
     localStorage.removeItem(TOKEN_EXPIRY_KEY);
-    
+    console.debug('[Token] Token eliminado');
   }
 };

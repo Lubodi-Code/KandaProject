@@ -1,11 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { characterService } from '../api/characters';
+import { useRoomStore } from '../stores/storytelling';
 import CharacterFormModal from '../components/CharacterFormModal.vue';
+
+const router = useRouter();
+const roomStore = useRoomStore();
 
 const characters = ref([]);
 const showModal = ref(false);
 const editingCharacter = ref(null);
+const activeTab = ref('characters');
 
 const fetchCharacters = async () => {
   const res = await characterService.list();
@@ -26,7 +32,8 @@ const saveCharacter = async data => {
   if (editingCharacter.value && editingCharacter.value.id) {
     await characterService.update(editingCharacter.value.id, data);
   } else {
-    await characterService.create(data);
+    // TEMPORAL: Usar endpoint de testing para nuevos personajes
+    await characterService.createCharacterTest(data);
   }
   showModal.value = false;
   await fetchCharacters();

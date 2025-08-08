@@ -1,7 +1,9 @@
+
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { authService } from '../../api/auth';
+import tokenManager from '../../utils/tokenManager';
 
 const router = useRouter();
 
@@ -14,6 +16,34 @@ const form = ref({
 // Estado de errores y carga
 const errors = ref({});
 const isLoading = ref(false);
+
+// Verificar autenticaci+¦n al cargar la p+ígina
+onMounted(async () => {
+  // Si ya hay un token v+ílido, redirigir al dashboard
+  if (tokenManager.isAuthenticated()) {
+    // Verificar tambi+®n que el token sea v+ílido en el servidor
+    try {
+      const authResult = await authService.checkAuth();
+      if (authResult.authenticated) {
+        router.replace('/dashboard');
+        return;
+      }
+    } catch {
+      // Si hay error, limpiar token inv+ílido
+      tokenManager.clearToken();
+    }
+  }
+
+  // Inicializar Google Sign-In
+  if (window.google) {
+    window.google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      callback: window.handleGoogleCallback,
+      auto_select: false,
+      cancel_on_tap_outside: true
+    });
+  }
+});
 
 // Validar el formulario
 const validateForm = () => {

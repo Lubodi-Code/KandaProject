@@ -11,7 +11,7 @@ export const authService = {
    * @returns {Promise} Promesa con la respuesta del servidor
    */
   register(data) {
-    return apiClient.post('/api/api-register/', data);
+  return apiClient.post('/api-register/', data);
   },
 
   /**
@@ -78,7 +78,7 @@ export const authService = {
    * @returns {Promise} Promesa con la respuesta del servidor
    */
   activate(uidb64, token) {
-    return apiClient.get(`/api/api-activate/${uidb64}/${token}/`);
+  return apiClient.get(`/api-activate/${uidb64}/${token}/`);
   },
 
   /**
@@ -87,7 +87,7 @@ export const authService = {
    * @returns {Promise} Promesa con la respuesta del servidor
    */
   resendActivation(email) {
-    return apiClient.post('/api/api-resend-activation/', { email });
+  return apiClient.post('/api-resend-activation/', { email });
   },
 
   /**
@@ -95,18 +95,20 @@ export const authService = {
    */
   logout() {
     try {
+      console.log('[AUTH] Cerrando sesi+¦n');
       // Intentar hacer logout en el servidor si hay token
       const token = tokenManager.getToken();
       if (token) {
         // Opcional: llamar al endpoint de logout del servidor
-        apiClient.post('/api/api-logout/').catch(() => {
+  apiClient.post('/api-logout/').catch(() => {
           // Ignorar errores del logout del servidor
-          console.warn('Error al hacer logout en el servidor, continuando con logout local');
+          console.warn('[AUTH] Error al hacer logout en el servidor, continuando con logout local');
         });
       }
     } finally {
       // Siempre limpiar el token local
       tokenManager.clearToken();
+      console.log('[AUTH] Token eliminado localmente');
     }
   },
 
@@ -115,7 +117,7 @@ export const authService = {
    * @returns {Promise} Promesa con la respuesta del servidor
    */
   getDashboard() {
-    return apiClient.get('/api/api-dashboard/');
+  return apiClient.get('/api-dashboard/');
   },
 
   /**

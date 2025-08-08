@@ -7,8 +7,24 @@ import secrets
 from datetime import datetime, timedelta
 from mongoengine.errors import DoesNotExist, NotUniqueError
 import logging
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.utils import timezone
+from django.conf import settings
+
+# Google OAuth verification
+try:
+    from google.oauth2 import id_token as google_id_token
+    from google.auth.transport import requests as google_requests
+except Exception:
+    google_id_token = None
+    google_requests = None
 
 from ..models import User
+from ..auth.tokens import account_activation_token
 
 # Configurar logging
 logger = logging.getLogger(__name__)
@@ -49,16 +65,16 @@ def api_login(request):
             return JsonResponse({"error": "Cuenta no activada"}, status=403)
         
         # Actualizar last_login
-        user.last_login = datetime.now()
+        user.last_login = timezone.now()
         user.save()
         
-        # Generar token
+        # Generar token con duraci+¶n de 30 d+°as
         token = secrets.token_hex(32)
-        expires_in = 86400  # 24 horas
+        expires_in = 30 * 24 * 3600  # 30 d+°as en segundos
         
         token_store[token] = {
             'user_id': str(user.id),
-            'expires': datetime.now() + timedelta(seconds=expires_in)
+            'expires': timezone.now() + timedelta(seconds=expires_in)
         }
         
         logger.info(f"Login exitoso para usuario: {email}")
@@ -77,6 +93,96 @@ def api_login(request):
         return JsonResponse({"error": "Formato JSON inv√°lido"}, status=400)
     except Exception as e:
         logger.error(f"Error en api_login: {str(e)}")
+        return JsonResponse({"error": "Error interno del servidor"}, status=500)
+
+@csrf_exempt
+def google_login(request):
+    """Login via Google ID token (One Tap / OAuth)."""
+    if request.method != 'POST':
+        return JsonResponse({"error": "M+Ætodo no permitido"}, status=405)
+
+    if google_id_token is None or google_requests is None:
+        return JsonResponse({
+            "error": "Dependencias de Google no instaladas. A+¶ade 'google-auth' a requirements.txt"
+        }, status=500)
+
+    try:
+        body = json.loads(request.body or '{}')
+        credential = body.get('credential') or body.get('id_token')
+        if not credential:
+            return JsonResponse({"error": "Falta el token de Google (credential)"}, status=400)
+
+        client_id = getattr(settings, 'GOOGLE_CLIENT_ID', None)
+        if not client_id:
+            return JsonResponse({"error": "GOOGLE_CLIENT_ID no configurado en settings"}, status=500)
+
+        # Verify the token
+        idinfo = google_id_token.verify_oauth2_token(
+            credential, google_requests.Request(), client_id
+        )
+
+        # Verify audience and issuer implicitly handled; ensure email present
+        email = idinfo.get('email')
+        email_verified = idinfo.get('email_verified')
+        name = idinfo.get('name') or idinfo.get('given_name') or 'Usuario'
+        sub = idinfo.get('sub')  # Google user ID
+
+        if not email or email_verified is False:
+            return JsonResponse({"error": "Email de Google no verificado"}, status=400)
+
+        # Find or create user
+        try:
+            user = User.objects.get(email=email)
+        except DoesNotExist:
+            username_base = (email.split('@')[0] if '@' in email else f"google_{sub}")
+            username = username_base
+            # Ensure unique username
+            i = 1
+            while True:
+                try:
+                    # Try a lookup; if not found, break
+                    _ = User.objects.get(username=username)
+                    username = f"{username_base}{i}"
+                    i += 1
+                except DoesNotExist:
+                    break
+            user = User(
+                username=username,
+                email=email,
+                password=secrets.token_hex(12),
+                is_active=True,
+            )
+            user.save()
+
+        # Update last_login
+        user.last_login = timezone.now()
+        user.save()
+
+        # Issue our app token (30 days)
+        token = secrets.token_hex(32)
+        expires_in = 30 * 24 * 3600
+        token_store[token] = {
+            'user_id': str(user.id),
+            'expires': timezone.now() + timedelta(seconds=expires_in)
+        }
+
+        return JsonResponse({
+            "token": token,
+            "expires_in": expires_in,
+            "user": {
+                "id": str(user.id),
+                "username": user.username,
+                "email": user.email,
+                "name": name
+            }
+        })
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Formato JSON inv+Ìlido"}, status=400)
+    except ValueError as ve:
+        # Token inv+Ìlido
+        return JsonResponse({"error": f"Token de Google inv+Ìlido: {str(ve)}"}, status=400)
+    except Exception as e:
+        logger.error(f"Error en google_login: {str(e)}")
         return JsonResponse({"error": "Error interno del servidor"}, status=500)
 
 @csrf_exempt
@@ -224,10 +330,6 @@ def api_activate_account(request, uidb64, token):
     """Vista de API para activar la cuenta de un usuario mediante el token enviado por correo."""
     try:
         # Decodificar el ID del usuario
-        from django.utils.http import urlsafe_base64_decode
-        from django.utils.encoding import force_str
-        from .tokens import account_activation_token
-        
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(id=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):

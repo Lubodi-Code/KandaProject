@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Google Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <h1>Test Google Sign-In</h1>
+    <button onclick="testGoogleLogin()">Test with Mock Token</button>
+    
+    <script>
+        // Funci+¦n para probar el endpoint con un token de prueba
+        async function testGoogleLogin() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/google-login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        credential: 'test_token' // Token de prueba - fallar+í pero mostrar+í si el endpoint funciona
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Response:', data);
+                alert('Response: ' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,13 +1,14 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-from ..models import CharacterProfile, User
-from ..utils.utils import get_character_statistics
+from ..models import Character, User
 import json
 import logging
 import datetime
+import platform
+import django
 
 # Configurar logger
 logger = logging.getLogger(__name__)
@@ -130,8 +131,38 @@ def admin_statistics(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+@permission_classes([AllowAny])
 def system_health(request):
+    """
+    Endpoint p+¦blico para verificar el estado del sistema.
+    No requiere autenticaci+¦n.
+    """
+    try:
+        # Informaci+¦n del sistema
+        system_info = {
+            'status': 'operational',
+            'timestamp': datetime.datetime.now().isoformat(),
+            'system': {
+                'python_version': platform.python_version(),
+                'django_version': django.get_version(),
+                'platform': platform.platform(),
+            },
+            'api_version': '1.0.0',
+        }
+        
+        return JsonResponse(system_info)
+        
+    except Exception as e:
+        logger.error(f"Error al verificar salud del sistema: {str(e)}")
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Error interno del servidor: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def system_health_admin(request):
     """
     Endpoint para verificar el estado del sistema (solo para administradores).
     """
@@ -183,9 +214,7 @@ def system_health(request):
                 'mongodb': mongo_status,
                 'celery': celery_status,
                 'openai_api': openai_status
-            },
-            'processing_statistics': processing_stats,
-            'avg_processing_time_seconds': round(avg_processing_time, 2)
+            }
         })
         
     except Exception as e:

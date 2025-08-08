@@ -24,3 +24,6 @@ yarn-error.log
 # IDE and editor files
 .idea/
 .vscode/
+# Patches and rejects
+*.rej
+*.patch

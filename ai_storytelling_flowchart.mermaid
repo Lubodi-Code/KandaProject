@@ -1,0 +1,132 @@
+flowchart TD
+    A[Inicio del Sistema] --> B[Usuario se Registra/Inicia Sesi+好]
+    
+    B --> C{-+Tipo de Usuario?}
+    C -->|Usuario Normal| D[Dashboard Usuario]
+    C -->|Admin| E[Dashboard Admin]
+    
+    %% Dashboard Admin
+    E --> F[Gestionar Universos]
+    E --> G[Ver Todas las Salas]
+    F --> F1[Crear Universo]
+    F --> F2[Editar Universo]
+    F --> F3[Eliminar Universo]
+    F1 --> F4[Definir Contexto/Reglas]
+    F4 --> F5[Subir Portada e Imagen]
+    F5 --> F6[Guardar Universo en MongoDB]
+    
+    %% Dashboard Usuario
+    D --> H[Gestionar Personajes]
+    D --> I[Ver Salas P+在licas]
+    D --> J[Unirse con C+圬igo Privado]
+    D --> K[Crear Nueva Sala]
+    
+    %% Gesti+好 de Personajes
+    H --> H1[Crear Personaje]
+    H --> H2[Editar Personaje]
+    H --> H3[Eliminar Personaje]
+    H1 --> H4[Definir Atributos del Personaje]
+    H4 --> H5[Guardar en MongoDB]
+    
+    %% Crear Sala
+    K --> K1[Seleccionar Universo]
+    K1 --> K2[Configurar Sala]
+    K2 --> K3{-+Sala P+在lica o Privada?}
+    K3 -->|P+在lica| K4[Crear Sala P+在lica]
+    K3 -->|Privada| K5[Generar C+圬igo de Sala]
+    K4 --> K6[Guardar Sala en MongoDB]
+    K5 --> K6
+    
+    %% Unirse a Sala
+    I --> L[Seleccionar Sala P+在lica]
+    J --> M[Introducir C+圬igo]
+    L --> N[Entrar a Sala]
+    M --> N
+    N --> O[Seleccionar Personajes]
+    O --> P[Confirmar Participaci+好]
+    P --> Q[Esperar a otros Jugadores]
+    
+    %% Inicio del Juego
+    Q --> R{-+Admin inicia juego?}
+    R -->|No| Q
+    R -->|S+﹄ S[Configurar Historia]
+    S --> S1[Seleccionar N+妃ero de Cap+﹀ulos]
+    S1 --> S2[Configurar Tiempo de Discusi+好]
+    S2 --> T[Iniciar Historia con IA]
+    
+    %% Ciclo de Juego
+    T --> U[IA Genera Cap+﹀ulo]
+    U --> U1[Procesar Contexto del Universo]
+    U1 --> U2[Considerar Personajes Activos]
+    U2 --> U3[Generar Narrativa]
+    U3 --> V[Mostrar Cap+﹀ulo a Jugadores]
+    V --> W[Actualizar en Tiempo Real - Vue.js]
+    
+    W --> X{-+Cap+﹀ulo Terminado?}
+    X -->|No| U3
+    X -->|S+﹄ Y{-+Discusi+好 Habilitada?}
+    
+    %% Fase de Discusi+好
+    Y -->|S+﹄ Z[Abrir Fase de Discusi+好]
+    Y -->|No| AA[Continuar al Siguiente Cap+﹀ulo]
+    
+    Z --> Z1[Jugadores Proponen Acciones]
+    Z1 --> Z2{-+Todos enviaron acciones O tiempo l+《ite?}
+    Z2 -->|No| Z1
+    Z2 -->|S+﹄ Z3[Recopilar Acciones de Jugadores]
+    Z3 --> AA
+    
+    %% Continuar Historia
+    AA --> BB{-+Quedan Cap+﹀ulos?}
+    BB -->|S+﹄ CC[Preparar Siguiente Cap+﹀ulo]
+    CC --> U1
+    BB -->|No| DD[Finalizar Historia]
+    
+    %% Finalizaci+好
+    DD --> EE[Guardar Historia Completa]
+    EE --> FF[Generar Resumen Final]
+    FF --> GG[Mostrar Historia Guardada]
+    GG --> HH[Volver al Dashboard]
+    
+    %% Base de Datos
+    subgraph MongoDB["MongoDB Collections"]
+        direction TB
+        DB1[Usuarios]
+        DB2[Personajes]
+        DB3[Universos]
+        DB4[Salas]
+        DB5[Historias]
+        DB6[Cap+﹀ulos]
+        DB7[Acciones de Jugadores]
+    end
+    
+    %% Conexiones con BD
+    H5 -.-> DB2
+    F6 -.-> DB3
+    K6 -.-> DB4
+    EE -.-> DB5
+    U3 -.-> DB6
+    Z3 -.-> DB7
+    
+    %% Tecnolog+｛s
+    subgraph Tech["Stack Tecnol+夙ico"]
+        direction LR
+        T1[Vue.js - Frontend]
+        T2[Django - Backend/API]
+        T3[MongoDB - Base de Datos]
+        T4[IA - Generaci+好 de Narrativa]
+        T5[WebSockets - Tiempo Real]
+    end
+    
+    %% Estilos
+    classDef userAction fill:#e1f5fe
+    classDef adminAction fill:#fff3e0
+    classDef aiProcess fill:#f3e5f5
+    classDef database fill:#e8f5e8
+    classDef decision fill:#fff9c4
+    
+    class D,H,I,J,K,L,M,N,O,P,Z1 userAction
+    class E,F,F1,F2,F3,S,S1,S2 adminAction
+    class U,U1,U2,U3,CC aiProcess
+    class H5,F6,K6,EE database
+    class C,K3,R,X,Y,Z2,BB decision
